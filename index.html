@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فرم اطلاعات مسافر</title>
+<style>
+  :root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#697386;--primary:#2457d6;--primary2:#173e9b;--border:#dce2ec;--danger:#c62828;--gold:#f5b301;--success:#247a47}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(135deg,#f5f7fb 0%,#edf2ff 100%);font-family:Tahoma,"Segoe UI",sans-serif;color:var(--text);line-height:1.8}
+  .page{max-width:860px;margin:32px auto;padding:0 16px}
+  .hero{background:linear-gradient(135deg,var(--primary2),var(--primary));color:#fff;border-radius:22px 22px 0 0;padding:28px 30px 24px;box-shadow:0 12px 35px rgba(27,54,120,.15)}
+  .hero h1{margin:0 0 6px;font-size:27px}.hero p{margin:0;opacity:.9;font-size:14px}
+  .steps{display:flex;gap:8px;margin-top:22px}.step{flex:1;height:7px;background:rgba(255,255,255,.28);border-radius:99px}.step.active{background:#fff}
+  .card{background:var(--card);padding:30px;border-radius:0 0 22px 22px;box-shadow:0 12px 35px rgba(27,54,120,.10)}
+  .section{margin-bottom:30px}.section:last-child{margin-bottom:0}.section h2{font-size:20px;margin:0 0 18px}.section p.help{font-size:13px;color:var(--muted);margin-top:-10px;margin-bottom:18px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.field.full{grid-column:1/-1}
+  label{display:block;font-weight:700;font-size:14px;margin-bottom:7px}label .req{color:var(--danger)}
+  input,select{width:100%;padding:13px 14px;border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--text);font:inherit;outline:none;transition:.15s}
+  input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(36,87,214,.10)}
+  .hint{font-size:12px;color:var(--muted);margin-top:5px}
+  .travel-list{display:flex;flex-direction:column;gap:13px}
+  .interest-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .interest-item{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid var(--border);border-radius:13px;background:#fbfcfe;cursor:pointer;font-weight:600}
+  .interest-item:hover{border-color:#b8c7ef;background:#f7f9ff}
+  .interest-item input{width:18px;height:18px;accent-color:var(--primary);flex:0 0 auto}
+  .travel-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:15px 16px;border:1px solid var(--border);border-radius:15px;background:#fbfcfe}
+  .travel-name{font-weight:700}.stars{display:flex;gap:3px;direction:ltr}
+  .star{border:0;background:none;padding:2px;cursor:pointer;font-size:28px;line-height:1;color:#cbd3e1}.star.active,.star:hover{color:var(--gold)}
+  .rating-note{font-size:12px;color:var(--muted);margin-top:8px;text-align:left}
+  .actions{display:flex;justify-content:space-between;gap:12px;margin-top:30px}.btn{border:0;border-radius:13px;padding:13px 22px;font:inherit;font-weight:700;cursor:pointer}.btn.primary{background:var(--primary);color:#fff}.btn.primary:hover{background:var(--primary2)}.btn.secondary{background:#eef2f8;color:#24324b}.btn:disabled{opacity:.45;cursor:not-allowed}
+  .error{border-color:var(--danger)!important;box-shadow:0 0 0 4px rgba(198,40,40,.07)!important}.field-error{color:var(--danger);font-size:12px;margin-top:4px;display:none}
+  .success{display:none;text-align:center;padding:25px;border:1px solid #cbe7d5;background:#f0faf3;border-radius:16px;color:var(--success)}
+  .success h3{margin-top:0}
+  .footer-note{text-align:center;color:var(--muted);font-size:12px;margin-top:14px}
+  .date-wrap{position:relative}.date-actions{display:flex;gap:7px;align-items:center}.date-actions input{flex:1}.date-btn{width:48px;height:48px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;font-size:20px}.date-picker{position:absolute;z-index:20;top:calc(100% + 8px);right:0;width:340px;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 18px 45px rgba(25,40,80,.18);padding:14px;display:none}.date-picker.open{display:block}.dp-selects{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.dp-selects select{padding:9px 10px;border-radius:10px;font-size:13px}.dp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.dp-head button{border:0;background:#eef2f8;border-radius:9px;width:34px;height:34px;cursor:pointer;font-size:16px}.dp-title{font-weight:700;font-size:14px}.dp-week,.dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.dp-week div{text-align:center;color:var(--muted);font-size:11px;padding:4px 0}.dp-day{height:34px;border:0;background:#f8f9fc;border-radius:8px;cursor:pointer;font:inherit;font-size:12px}.dp-day:hover{background:#e9efff}.dp-day.muted{background:transparent;color:#b7bfcc;cursor:default}.dp-day.selected{background:var(--primary);color:#fff}.today-btn{margin-top:8px;width:100%;border:0;background:#eef2f8;border-radius:9px;padding:7px;cursor:pointer;font:inherit;font-size:12px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}.interest-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.hero{padding:23px 20px}.card{padding:22px}.travel-row{grid-template-columns:1fr}.actions{flex-direction:column}.btn{width:100%}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hero">
+    <h1>فرم اطلاعات مسافر</h1>
+    <p>اطلاعات شما برای برنامه‌ریزی بهتر سفرها و شناخت ترجیحات سفر ثبت می‌شود.</p>
+    <div class="steps"><span class="step active"></span><span class="step active"></span><span class="step"></span></div>
+  </div>
+
+  <form class="card" id="passengerForm" novalidate>
+    <div class="section">
+      <h2>۱. اطلاعات شخصی</h2>
+      <p class="help">لطفاً اطلاعات را دقیق وارد کنید. موارد ستاره‌دار الزامی هستند.</p>
+      <div class="grid">
+        <div class="field">
+          <label for="fullName">نام و نام خانوادگی <span class="req">*</span></label>
+          <input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="مثلاً علی رضایی" required>
+          <div class="field-error" id="fullNameError">نام و نام خانوادگی را وارد کنید.</div>
+        </div>
+
+        <div class="field">
+          <label for="nationalId">کد ملی <span class="req">*</span></label>
+          <input id="nationalId" name="nationalId" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم" required>
+          <div class="field-error" id="nationalIdError">کد ملی باید ۱۰ رقم معتبر باشد.</div>
+        </div>
+
+        <div class="field">
+          <label for="birthDate">تاریخ تولد</label>
+          <div class="date-wrap">
+            <div class="date-actions">
+              <input id="birthDate" name="birthDate" inputmode="numeric" placeholder="۱۴۰۰/۰۱/۰۱" autocomplete="bday" dir="ltr">
+              <button type="button" class="date-btn" id="datePickerBtn" aria-label="باز کردن تقویم">📅</button>
+            </div>
+            <div class="date-picker" id="datePicker">
+              <div class="dp-selects">
+                <select id="dpYear" aria-label="انتخاب سال"></select>
+                <select id="dpMonth" aria-label="انتخاب ماه"></select>
+              </div>
+              <div class="dp-head"><button type="button" id="dpPrev" aria-label="ماه قبل">‹</button><div class="dp-title" id="dpTitle"></div><button type="button" id="dpNext" aria-label="ماه بعد">›</button></div>
+              <div class="dp-week"><div>ش</div><div>ی</div><div>د</div><div>س</div><div>چ</div><div>پ</div><div>ج</div></div>
+              <div class="dp-grid" id="dpGrid"></div>
+              <button type="button" class="today-btn" id="dpToday">رفتن به ماه جاری</button>
+            </div>
+          </div>
+          <div class="hint">تقویم شمسی: سال/ماه/روز — مثال: ۱۳۷۵/۰۶/۱۸</div>
+        </div>
+
+        <div class="field">
+          <label for="mobile">شماره موبایل <span class="req">*</span></label>
+          <input id="mobile" name="mobile" type="tel" inputmode="tel" placeholder="۰۹۱۲۱۲۳۴۵۶۷" required>
+          <div class="field-error" id="mobileError">شماره موبایل را به صورت ۱۱ رقمی وارد کنید.</div>
+        </div>
+
+        <div class="field">
+          <label for="emergencyMobile">شماره موبایل برای تماس ضروری <span class="req">*</span></label>
+          <input id="emergencyMobile" name="emergencyMobile" type="tel" inputmode="tel" placeholder="۰۹۱۲۱۲۳۴۵۶۷" required>
+          <div class="field-error" id="emergencyMobileError">شماره تماس ضروری را به صورت ۱۱ رقمی وارد کنید.</div>
+        </div>
+
+        <div class="field">
+          <label for="neighborhood">محله سکونت <span class="req">*</span></label>
+          <input id="neighborhood" name="neighborhood" type="text" placeholder="مثلاً سعادت‌آباد" required>
+          <div class="field-error" id="neighborhoodError">محله سکونت را وارد کنید.</div>
+        </div>
+
+        <div class="field full">
+          <label for="education">مدرک تحصیلی <span class="req">*</span></label>
+          <select id="education" name="education" required>
+            <option value="">انتخاب کنید</option>
+            <option>زیر دیپلم</option>
+            <option>دیپلم</option>
+            <option>کاردانی</option>
+            <option>کارشناسی</option>
+            <option>کارشناسی ارشد</option>
+            <option>دکتری</option>
+            <option>سایر</option>
+          </select>
+          <div class="field-error" id="educationError">مدرک تحصیلی را انتخاب کنید.</div>
+        </div>
+
+        <div class="field">
+          <label for="gender">جنسیت</label>
+          <select id="gender" name="gender">
+            <option value="">انتخاب کنید</option>
+            <option>زن</option>
+            <option>مرد</option>
+            <option>ترجیح می‌دهم نگویم</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="occupation">شغل</label>
+          <input id="occupation" name="occupation" type="text" placeholder="مثلاً معلم، مهندس، دانشجو">
+        </div>
+
+        <div class="field full">
+          <label for="maritalStatus">وضعیت تأهل</label>
+          <select id="maritalStatus" name="maritalStatus">
+            <option value="">انتخاب کنید</option>
+            <option>مجرد</option>
+            <option>متأهل</option>
+            <option>ترجیح می‌دهم نگویم</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>۲. علایق و ترجیحات سفر</h2>
+      <p class="help">برای هر نوع سفر از ۱ تا ۵ ستاره میزان علاقه خود را انتخاب کنید؛ ۵ ستاره یعنی علاقه بسیار زیاد.</p>
+      <div class="travel-list" id="travelList">
+        <div class="travel-row" data-type="یکروزه">
+          <div><div class="travel-name">یکروزه</div><div class="rating-note" id="note-one">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به سفر یکروزه">
+            <button type="button" class="star" data-value="1" aria-label="۱ ستاره">★</button>
+            <button type="button" class="star" data-value="2" aria-label="۲ ستاره">★</button>
+            <button type="button" class="star" data-value="3" aria-label="۳ ستاره">★</button>
+            <button type="button" class="star" data-value="4" aria-label="۴ ستاره">★</button>
+            <button type="button" class="star" data-value="5" aria-label="۵ ستاره">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="اقامتگاهی">
+          <div><div class="travel-name">اقامتگاهی</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به سفر اقامتگاهی">
+            <button type="button" class="star" data-value="1" aria-label="۱ ستاره">★</button><button type="button" class="star" data-value="2" aria-label="۲ ستاره">★</button><button type="button" class="star" data-value="3" aria-label="۳ ستاره">★</button><button type="button" class="star" data-value="4" aria-label="۴ ستاره">★</button><button type="button" class="star" data-value="5" aria-label="۵ ستاره">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="کمپ">
+          <div><div class="travel-name">کمپ</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به کمپ">
+            <button type="button" class="star" data-value="1" aria-label="۱ ستاره">★</button><button type="button" class="star" data-value="2" aria-label="۲ ستاره">★</button><button type="button" class="star" data-value="3" aria-label="۳ ستاره">★</button><button type="button" class="star" data-value="4" aria-label="۴ ستاره">★</button><button type="button" class="star" data-value="5" aria-label="۵ ستاره">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="پیمایشی">
+          <div><div class="travel-name">پیمایشی</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به سفر پیمایشی">
+            <button type="button" class="star" data-value="1" aria-label="۱ ستاره">★</button><button type="button" class="star" data-value="2" aria-label="۲ ستاره">★</button><button type="button" class="star" data-value="3" aria-label="۳ ستاره">★</button><button type="button" class="star" data-value="4" aria-label="۴ ستاره">★</button><button type="button" class="star" data-value="5" aria-label="۵ ستاره">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="کوهنوردی">
+          <div><div class="travel-name">کوهنوردی</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به کوهنوردی">
+            <button type="button" class="star" data-value="1" aria-label="۱ ستاره">★</button><button type="button" class="star" data-value="2" aria-label="۲ ستاره">★</button><button type="button" class="star" data-value="3" aria-label="۳ ستاره">★</button><button type="button" class="star" data-value="4" aria-label="۴ ستاره">★</button><button type="button" class="star" data-value="5" aria-label="۵ ستاره">★</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>۳. علایق و تجربه‌های مورد علاقه</h2>
+      <p class="help">مواردی را که در سفر بیشتر دوست دارید انتخاب کنید. انتخاب چند مورد امکان‌پذیر است.</p>
+      <div class="interest-grid">
+        <label class="interest-item"><input type="checkbox" name="interests" value="طبیعت‌گردی"><span>طبیعت‌گردی</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="فرهنگ و تاریخ"><span>فرهنگ و تاریخ</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="غذا و تجربه‌های محلی"><span>غذا و تجربه‌های محلی</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="آرامش و دوری از شلوغی"><span>آرامش و دوری از شلوغی</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="بازی‌های گروهی"><span>بازی‌های گروهی</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="موسیقی"><span>موسیقی</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="ورزش"><span>ورزش</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="مدیتیشن"><span>مدیتیشن</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="عکاسی"><span>عکاسی</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="حیات‌وحش"><span>حیات‌وحش</span></label>
+        <label class="interest-item"><input type="checkbox" name="interests" value="سایر"><span>سایر</span></label>
+      </div>
+      <div class="field full" style="margin-top:14px">
+        <label for="otherInterest">اگر «سایر» را انتخاب کردید، بنویسید</label>
+        <input id="otherInterest" name="otherInterest" type="text" placeholder="مثلاً نجوم، کارگاه هنری، کتاب‌خوانی">
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>۴. ثبت اطلاعات</h2>
+      <p class="help">در نسخه اتصال به دیتابیس، اطلاعات فرم برای ثبت یا به‌روزرسانی پروفایل مسافر ارسال خواهد شد.</p>
+      <div class="success" id="successBox">
+        <h3>اطلاعات فرم آماده شد</h3>
+        <div id="successText"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn secondary" id="resetBtn">پاک کردن فرم</button>
+        <button type="submit" class="btn primary">ثبت اطلاعات</button>
+      </div>
+    </div>
+
+    <div class="footer-note">نسخه آزمایشی فرم مسافر — بدون اتصال به دیتابیس</div>
+  </form>
+</div>
+
+<script>
+const faDigits = '۰۱۲۳۴۵۶۷۸۹';
+function toEnglishDigits(str){return String(str||'').replace(/[۰-۹]/g,d=>faDigits.indexOf(d));}
+function normalizePhone(value){return toEnglishDigits(value).replace(/[\s\-()]/g,'');}
+function validIranMobile(value){return /^09\d{9}$/.test(normalizePhone(value));}
+function validNationalId(value){
+  const n=toEnglishDigits(value).replace(/\D/g,'');
+  if(!/^\d{10}$/.test(n) || /^([0-9])\1{9}$/.test(n)) return false;
+  const check=+n[9]; let sum=0;
+  for(let i=0;i<9;i++) sum += +n[i]*(10-i);
+  const r=sum%11;
+  return r<2 ? check===r : check===11-r;
+}
+function showError(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';}
+function clearErrors(){document.querySelectorAll('.field-error').forEach(e=>e.style.display='none');document.querySelectorAll('.error').forEach(e=>e.classList.remove('error'));}
+
+// Star ratings
+const ratings={};
+document.querySelectorAll('.travel-row').forEach(row=>{
+  const type=row.dataset.type; const note=row.querySelector('.rating-note');
+  row.querySelectorAll('.star').forEach(btn=>btn.addEventListener('click',()=>{
+    const value=Number(btn.dataset.value); ratings[type]=value;
+    row.querySelectorAll('.star').forEach(s=>s.classList.toggle('active',Number(s.dataset.value)<=value));
+    note.textContent = `${value} از ۵ ستاره`;
+  }));
+});
+
+
+// Jalali calendar with quick year/month selection
+function div(a,b){ return Math.floor(a/b); }
+function g2j(gy,gm,gd){
+  const gdm=[0,31,59,90,120,151,181,212,243,273,304,334];
+  let gy2=gm>2?gy+1:gy;
+  let days=355666+365*gy+div(gy2+3,4)-div(gy2+99,100)+div(gy2+399,400)+gd+gdm[gm-1];
+  let jy=-1595+33*div(days,12053); days%=12053;
+  jy+=4*div(days,1461); days%=1461;
+  if(days>365){ jy+=div(days-1,365); days=(days-1)%365; }
+  let jm=days<186?1+div(days,31):7+div(days-186,30);
+  let jd=1+(days<186?days%31:(days-186)%30);
+  return [jy,jm,jd];
+}
+function j2g(jy,jm,jd){
+  const gy=jy+621;
+  const jy2=jy-979;
+  let jDayNo=365*jy2+div(jy2,33)*8+div((jy2%33)+3,4);
+  jDayNo += (jm<7 ? (jm-1)*31 : (jm-7)*30+186) + (jd-1);
+  let gDayNo=jDayNo+79;
+  let gy2=1600+400*div(gDayNo,146097); gDayNo%=146097;
+  let leap=true;
+  if(gDayNo>=36525){ gDayNo--; gy2+=100*div(gDayNo,36524); gDayNo%=36524; if(gDayNo>=365) gDayNo++; else leap=false; }
+  gy2+=4*div(gDayNo,1461); gDayNo%=1461;
+  if(gDayNo>=366){ leap=false; gDayNo--; gy2+=div(gDayNo,365); gDayNo%=365; }
+  let gm;
+  const sal_a=[0,31,28,31,30,31,30,31,31,30,31,30,31];
+  if(leap) sal_a[2]=29;
+  for(gm=1;gm<=12 && gDayNo>=sal_a[gm];gm++) gDayNo-=sal_a[gm];
+  const gd=gDayNo+1;
+  return [gy2,gm,gd];
+}
+function jalaliMonthLen(y,m){
+  if(m<=6) return 31;
+  if(m<=11) return 30;
+  const r=((y-474)%2820+2820)%2820;
+  return (r+474+38)*682%2816 < 682 ? 30 : 29;
+}
+function pad2(n){return String(n).padStart(2,'0');}
+function faNum(s){return String(s).replace(/\d/g,d=>faDigits[d]);}
+let nowJ=g2j(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate());
+let dpYear=nowJ[0], dpMonth=nowJ[1];
+const monthNames=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const dp=document.getElementById('datePicker'), dpGrid=document.getElementById('dpGrid'), dpTitle=document.getElementById('dpTitle'), birth=document.getElementById('birthDate');
+const dpYearSelect=document.getElementById('dpYear'), dpMonthSelect=document.getElementById('dpMonth');
+
+for(let y=1300;y<=nowJ[0];y++){
+  const opt=document.createElement('option'); opt.value=y; opt.textContent=faNum(y); dpYearSelect.appendChild(opt);
+}
+monthNames.forEach((name,i)=>{
+  const opt=document.createElement('option'); opt.value=i+1; opt.textContent=name; dpMonthSelect.appendChild(opt);
+});
+function syncSelectors(){ dpYearSelect.value=String(dpYear); dpMonthSelect.value=String(dpMonth); }
+function renderDP(){
+  syncSelectors();
+  dpTitle.textContent=faNum(dpYear)+' '+monthNames[dpMonth-1]; dpGrid.innerHTML='';
+  const g=j2g(dpYear,dpMonth,1);
+  const firstDow=(new Date(g[0],g[1]-1,g[2]).getDay()+1)%7; // Saturday=0
+  for(let i=0;i<firstDow;i++){let b=document.createElement('button');b.type='button';b.className='dp-day muted';b.tabIndex=-1;dpGrid.appendChild(b);}
+  const selected=toEnglishDigits(birth.value).replaceAll('-','/').split('/');
+  for(let d=1;d<=jalaliMonthLen(dpYear,dpMonth);d++){
+    let b=document.createElement('button');b.type='button';b.className='dp-day';b.textContent=faNum(d);
+    if(+selected[0]===dpYear&&+selected[1]===dpMonth&&+selected[2]===d)b.classList.add('selected');
+    b.addEventListener('click',()=>{birth.value=faNum(`${dpYear}/${pad2(dpMonth)}/${pad2(d)}`);dp.classList.remove('open');});
+    dpGrid.appendChild(b);
+  }
+}
+function openDP(){dp.classList.toggle('open');renderDP();}
+document.getElementById('datePickerBtn').addEventListener('click',openDP);
+document.getElementById('dpPrev').addEventListener('click',()=>{dpMonth--;if(dpMonth<1){dpMonth=12;dpYear--;}renderDP();});
+document.getElementById('dpNext').addEventListener('click',()=>{dpMonth++;if(dpMonth>12){dpMonth=1;dpYear++;}renderDP();});
+dpYearSelect.addEventListener('change',()=>{dpYear=Number(dpYearSelect.value);renderDP();});
+dpMonthSelect.addEventListener('change',()=>{dpMonth=Number(dpMonthSelect.value);renderDP();});
+document.getElementById('dpToday').addEventListener('click',()=>{dpYear=nowJ[0];dpMonth=nowJ[1];renderDP();});
+birth.addEventListener('change',()=>{let v=toEnglishDigits(birth.value).replaceAll('-','/').split('/');if(v.length>=2&&+v[0]>=1300&&+v[0]<=nowJ[0]&&+v[1]>=1&&+v[1]<=12){dpYear=+v[0];dpMonth=+v[1];renderDP();}});
+document.addEventListener('click',(e)=>{if(dp.classList.contains('open')&&!e.target.closest('.date-wrap'))dp.classList.remove('open');});
+
+document.getElementById('passengerForm').addEventListener('submit',e=>{
+  e.preventDefault(); clearErrors();
+  let ok=true;
+  const req=[['fullName','fullNameError'],['neighborhood','neighborhoodError'],['education','educationError']];
+  req.forEach(([f,er])=>{if(!document.getElementById(f).value.trim()){document.getElementById(f).classList.add('error');showError(er,document.getElementById(er).textContent);ok=false;}});
+  const nid=document.getElementById('nationalId');
+  if(!validNationalId(nid.value)){nid.classList.add('error');showError('nationalIdError','کد ملی باید ۱۰ رقم معتبر باشد.');ok=false;}
+  ['mobile','emergencyMobile'].forEach(f=>{const el=document.getElementById(f);if(!validIranMobile(el.value)){el.classList.add('error');showError(f+'Error','شماره موبایل را به صورت ۱۱ رقمی وارد کنید.');ok=false;}});
+  const b=document.getElementById('birthDate');
+  if(b.value.trim() && !/^\d{4}[\/\-]\d{2}[\/\-]\d{2}$/.test(toEnglishDigits(b.value).trim())){b.classList.add('error');ok=false;}
+  if(!ok) return;
+
+  const data={
+    fullName:document.getElementById('fullName').value.trim(),
+    nationalId:toEnglishDigits(nid.value).trim(),
+    birthDate:toEnglishDigits(b.value).trim(),
+    mobile:normalizePhone(document.getElementById('mobile').value),
+    emergencyMobile:normalizePhone(document.getElementById('emergencyMobile').value),
+    neighborhood:document.getElementById('neighborhood').value.trim(),
+    education:document.getElementById('education').value,
+    gender:document.getElementById('gender').value,
+    occupation:document.getElementById('occupation').value.trim(),
+    maritalStatus:document.getElementById('maritalStatus').value,
+    travelRatings:{...ratings},
+    interests:[...document.querySelectorAll('input[name="interests"]:checked')].map(x=>x.value),
+    otherInterest:document.getElementById('otherInterest').value.trim()
+  };
+  document.getElementById('successBox').style.display='block';
+  document.getElementById('successText').textContent='اطلاعات با موفقیت اعتبارسنجی شد. در نسخه اتصال به دیتابیس، همین داده‌ها برای ثبت در Excel ارسال خواهند شد.';
+  document.getElementById('successBox').scrollIntoView({behavior:'smooth',block:'center'});
+  console.log('Passenger form payload:',data);
+});
+
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  document.getElementById('passengerForm').reset();
+  Object.keys(ratings).forEach(k=>delete ratings[k]);
+  document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.rating-note').forEach(n=>n.textContent='انتخاب نشده');
+  document.getElementById('successBox').style.display='none';
+  clearErrors();
+});
+</script>
+</body>
+</html>
