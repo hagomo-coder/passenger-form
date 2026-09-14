@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فرم ثبت‌نام مسافر | اکتیو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6fb;--card:#ffffff;--text:#1a2333;--muted:#6b7688;
+    --primary:#1f5fd6;--primary-deep:#123c94;--primary-tint:#eaf0ff;
+    --border:#dde3ee;--danger:#c62828;--gold:#e8a900;--success:#1f7a4d;--success-tint:#eaf8f0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    font-family:'Vazirmatn',Tahoma,sans-serif;
+    color:var(--text);line-height:1.85;min-height:100vh;
+  }
+  .page{max-width:720px;margin:0 auto;padding:28px 16px 60px}
+
+  /* Header */
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding:0 4px}
+  .brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));flex:0 0 auto}
+  .brand-name{font-weight:800;font-size:15px;letter-spacing:.2px}
+  .brand-sub{font-size:12px;color:var(--muted)}
+
+  .hero{background:linear-gradient(135deg,var(--primary-deep),var(--primary));color:#fff;border-radius:20px;padding:26px 26px 22px;margin-bottom:14px}
+  .hero h1{margin:0 0 6px;font-size:22px;font-weight:800}
+  .hero p{margin:0;opacity:.92;font-size:13.5px}
+
+  /* Step progress */
+  .progress-wrap{display:flex;align-items:center;gap:6px;margin:20px 2px 22px}
+  .progress-seg{flex:1;height:6px;border-radius:99px;background:var(--border);position:relative;overflow:hidden}
+  .progress-seg.done{background:var(--primary)}
+  .progress-seg.current{background:linear-gradient(90deg,var(--primary) 50%,var(--border) 50%)}
+  .progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:0 2px 4px}
+  .progress-label strong{color:var(--primary-deep)}
+
+  .card{background:var(--card);border-radius:20px;padding:26px 26px 24px;box-shadow:0 10px 30px rgba(20,40,90,.07);border:1px solid #eef1f7}
+  .step{display:none}
+  .step.active{display:block;animation:fadeIn .25s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .step h2{font-size:18px;margin:0 0 4px}
+  .step .step-help{font-size:13px;color:var(--muted);margin:0 0 20px}
+
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .field.full{grid-column:1/-1}
+  label{display:block;font-weight:600;font-size:13.5px;margin-bottom:7px}
+  label .req{color:var(--danger)}
+  input,select,textarea{
+    width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:11px;
+    background:#fff;color:var(--text);font:inherit;outline:none;transition:.15s;
+  }
+  textarea{resize:vertical;min-height:70px}
+  input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-tint)}
+  .hint{font-size:11.5px;color:var(--muted);margin-top:5px}
+  .field-error{color:var(--danger);font-size:12px;margin-top:4px;display:none}
+  .error{border-color:var(--danger)!important;box-shadow:0 0 0 4px rgba(198,40,40,.08)!important}
+
+  /* fitness selector */
+  .fitness-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .fitness-item{border:1px solid var(--border);border-radius:13px;padding:12px 13px;cursor:pointer;background:#fbfcfe}
+  .fitness-item input{width:auto;display:none}
+  .fitness-item .ft-title{font-weight:700;font-size:13.5px;margin-bottom:2px}
+  .fitness-item .ft-desc{font-size:11.5px;color:var(--muted)}
+  .fitness-item.selected{border-color:var(--primary);background:var(--primary-tint)}
+
+  /* travel ratings */
+  .travel-list{display:flex;flex-direction:column;gap:12px}
+  .travel-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:14px 15px;border:1px solid var(--border);border-radius:14px;background:#fbfcfe}
+  .travel-name{font-weight:700;font-size:14px}
+  .stars{display:flex;gap:3px;direction:ltr}
+  .star{border:0;background:none;padding:2px;cursor:pointer;font-size:26px;line-height:1;color:#cfd6e3}
+  .star.active,.star:hover{color:var(--gold)}
+  .rating-note{font-size:11.5px;color:var(--muted);margin-top:4px}
+
+  /* interests */
+  .interest-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .interest-item{display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid var(--border);border-radius:12px;background:#fbfcfe;cursor:pointer;font-weight:600;font-size:13.5px}
+  .interest-item:hover{border-color:#b9c8f0;background:#f6f9ff}
+  .interest-item input{width:17px;height:17px;accent-color:var(--primary);flex:0 0 auto}
+
+  /* review */
+  .review-block{border:1px solid var(--border);border-radius:14px;padding:16px 17px;margin-bottom:12px;background:#fbfcfe}
+  .review-block h3{margin:0 0 10px;font-size:14px;color:var(--primary-deep)}
+  .review-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:5px 0;border-bottom:1px dashed #e6eaf2}
+  .review-row:last-child{border-bottom:0}
+  .review-row .k{color:var(--muted)}
+  .review-row .v{font-weight:600;text-align:left}
+  .edit-link{font-size:12px;color:var(--primary);cursor:pointer;background:none;border:0;font:inherit;padding:0}
+
+  .consent{display:flex;gap:10px;align-items:flex-start;background:var(--primary-tint);border-radius:13px;padding:14px 15px;margin-top:6px}
+  .consent input{width:18px;height:18px;margin-top:2px;accent-color:var(--primary)}
+  .consent label{font-size:12.5px;font-weight:500;margin:0}
+
+  .success{display:none;text-align:center;padding:30px 20px;border:1px solid #cbe7d5;background:var(--success-tint);border-radius:16px;color:var(--success)}
+  .success h3{margin-top:0}
+
+  .actions{display:flex;justify-content:space-between;gap:12px;margin-top:26px}
+  .btn{border:0;border-radius:12px;padding:12px 22px;font:inherit;font-weight:700;cursor:pointer;font-size:14px}
+  .btn.primary{background:var(--primary);color:#fff}
+  .btn.primary:hover{background:var(--primary-deep)}
+  .btn.secondary{background:#eef2f8;color:#28344a}
+  .btn.secondary:hover{background:#e3e9f4}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  .date-wrap{position:relative}
+  .date-actions{display:flex;gap:7px;align-items:center}
+  .date-actions input{flex:1}
+  .date-btn{width:46px;height:46px;border:1px solid var(--border);border-radius:11px;background:#fff;cursor:pointer;font-size:19px;flex:0 0 auto}
+  .date-picker{position:absolute;z-index:20;top:calc(100% + 8px);right:0;width:320px;max-width:90vw;background:#fff;border:1px solid var(--border);border-radius:15px;box-shadow:0 18px 45px rgba(25,40,80,.18);padding:14px;display:none}
+  .date-picker.open{display:block}
+  .dp-selects{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+  .dp-selects select{padding:9px 10px;border-radius:10px;font-size:13px}
+  .dp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .dp-head button{border:0;background:#eef2f8;border-radius:9px;width:32px;height:32px;cursor:pointer;font-size:15px}
+  .dp-title{font-weight:700;font-size:13px}
+  .dp-week,.dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .dp-week div{text-align:center;color:var(--muted);font-size:11px;padding:4px 0}
+  .dp-day{height:32px;border:0;background:#f8f9fc;border-radius:8px;cursor:pointer;font:inherit;font-size:12px}
+  .dp-day:hover{background:#e9efff}
+  .dp-day.muted{background:transparent;color:#c3cad6;cursor:default}
+  .dp-day.selected{background:var(--primary);color:#fff}
+  .today-btn{margin-top:8px;width:100%;border:0;background:#eef2f8;border-radius:9px;padding:7px;cursor:pointer;font:inherit;font-size:12px}
+
+  .footer-note{text-align:center;color:var(--muted);font-size:11.5px;margin-top:16px}
+
+  @media(max-width:640px){
+    .grid,.fitness-options,.interest-grid{grid-template-columns:1fr}
+    .hero{padding:22px 20px}
+    .card{padding:20px}
+    .travel-row{grid-template-columns:1fr}
+    .stars{justify-content:flex-start}
+    .actions{flex-direction:column-reverse}
+    .btn{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div>
+      <div class="brand-name">اکتیو</div>
+      <div class="brand-sub">گروه سفر و طبیعت‌گردی</div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>ثبت‌نام مسافر</h1>
+    <p>این اطلاعات فقط یک‌بار ثبت می‌شود و برای برنامه‌ریزی سفرهای آینده و شناخت بهتر علایق شما استفاده خواهد شد.</p>
+  </div>
+
+  <div class="progress-label"><span>مرحله <strong id="stepNow">1</strong> از ۵</span><span id="stepTitle">اطلاعات هویتی</span></div>
+  <div class="progress-wrap" id="progressWrap"></div>
+
+  <form class="card" id="passengerForm" novalidate>
+
+    <!-- STEP 1: identity -->
+    <section class="step active" data-step="1">
+      <h2>۱. اطلاعات هویتی</h2>
+      <p class="step-help">اطلاعات پایه‌ی شناسایی شما. کد ملی برای جلوگیری از ثبت تکراری در سفرهای بعدی استفاده می‌شود.</p>
+      <div class="grid">
+        <div class="field full">
+          <label for="fullName">نام و نام خانوادگی <span class="req">*</span></label>
+          <input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="مثلاً علی رضایی" required>
+          <div class="field-error" id="fullNameError">نام و نام خانوادگی را وارد کنید.</div>
+        </div>
+
+        <div class="field">
+          <label for="nationalId">کد ملی <span class="req">*</span></label>
+          <input id="nationalId" name="nationalId" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم" required>
+          <div class="hint">اگر قبلاً با این کد ملی ثبت‌نام کرده باشید، پروفایل قبلی‌تان به‌روزرسانی می‌شود.</div>
+          <div class="field-error" id="nationalIdError">کد ملی باید ۱۰ رقم معتبر باشد.</div>
+          <div class="hint" id="nationalIdDupNote" style="display:none;color:var(--primary-deep);font-weight:600">این کد ملی قبلاً ثبت شده — اطلاعات شما به‌روزرسانی خواهد شد.</div>
+        </div>
+
+        <div class="field">
+          <label for="gender">جنسیت</label>
+          <select id="gender" name="gender">
+            <option value="">انتخاب کنید</option>
+            <option>زن</option>
+            <option>مرد</option>
+            <option>ترجیح می‌دهم نگویم</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label for="birthDate">تاریخ تولد</label>
+          <div class="date-wrap">
+            <div class="date-actions">
+              <input id="birthDate" name="birthDate" inputmode="numeric" placeholder="۱۳۷۵/۰۶/۱۸" autocomplete="bday" dir="ltr">
+              <button type="button" class="date-btn" id="datePickerBtn" aria-label="باز کردن تقویم">📅</button>
+            </div>
+            <div class="date-picker" id="datePicker">
+              <div class="dp-selects">
+                <select id="dpYear" aria-label="انتخاب سال"></select>
+                <select id="dpMonth" aria-label="انتخاب ماه"></select>
+              </div>
+              <div class="dp-head"><button type="button" id="dpPrev" aria-label="ماه قبل">‹</button><div class="dp-title" id="dpTitle"></div><button type="button" id="dpNext" aria-label="ماه بعد">›</button></div>
+              <div class="dp-week"><div>ش</div><div>ی</div><div>د</div><div>س</div><div>چ</div><div>پ</div><div>ج</div></div>
+              <div class="dp-grid" id="dpGrid"></div>
+              <button type="button" class="today-btn" id="dpToday">رفتن به ماه جاری</button>
+            </div>
+          </div>
+          <div class="hint">تقویم شمسی — سال/ماه/روز</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: contact + emergency -->
+    <section class="step" data-step="2">
+      <h2>۲. تماس و اطلاعات ایمنی</h2>
+      <p class="step-help">این اطلاعات فقط در مواقع لزوم (هماهنگی سفر یا شرایط اضطراری) استفاده می‌شود.</p>
+      <div class="grid">
+        <div class="field">
+          <label for="mobile">شماره موبایل <span class="req">*</span></label>
+          <input id="mobile" name="mobile" type="tel" inputmode="tel" placeholder="۰۹۱۲۱۲۳۴۵۶۷" required>
+          <div class="field-error" id="mobileError">شماره موبایل را به‌صورت ۱۱ رقمی وارد کنید.</div>
+        </div>
+
+        <div class="field">
+          <label for="emergencyMobile">شماره تماس ضروری <span class="req">*</span></label>
+          <input id="emergencyMobile" name="emergencyMobile" type="tel" inputmode="tel" placeholder="۰۹۱۲۱۲۳۴۵۶۷" required>
+          <div class="field-error" id="emergencyMobileError">شماره تماس ضروری را به‌صورت ۱۱ رقمی وارد کنید.</div>
+        </div>
+
+        <div class="field full">
+          <label for="emergencyName">نسبت فرد با شما (تماس ضروری)</label>
+          <input id="emergencyName" name="emergencyName" type="text" placeholder="مثلاً همسر، برادر، دوست">
+        </div>
+
+        <div class="field full">
+          <label for="neighborhood">محله سکونت <span class="req">*</span></label>
+          <input id="neighborhood" name="neighborhood" type="text" placeholder="مثلاً سعادت‌آباد" required>
+          <div class="field-error" id="neighborhoodError">محله سکونت را وارد کنید.</div>
+        </div>
+
+        <div class="field full">
+          <label for="medicalNote">نکات ایمنی پزشکی <span style="font-weight:400;color:var(--muted)">(اختیاری)</span></label>
+          <textarea id="medicalNote" name="medicalNote" placeholder="حساسیت غذایی/دارویی، بیماری خاص یا هر نکته‌ای که راهنمای سفر باید در شرایط اضطراری بداند"></textarea>
+          <div class="hint">این بخش کاملاً اختیاری است و فقط برای ایمنی شما در طول سفر به راهنما اطلاع داده می‌شود.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: profile + fitness -->
+    <section class="step" data-step="3">
+      <h2>۳. مشخصات تکمیلی و توان بدنی</h2>
+      <p class="step-help">این اطلاعات کمک می‌کند سفر مناسب سطح شما به شما پیشنهاد شود.</p>
+      <div class="grid">
+        <div class="field">
+          <label for="education">مدرک تحصیلی</label>
+          <select id="education" name="education">
+            <option value="">انتخاب کنید</option>
+            <option>زیر دیپلم</option>
+            <option>دیپلم</option>
+            <option>کاردانی</option>
+            <option>کارشناسی</option>
+            <option>کارشناسی ارشد</option>
+            <option>دکتری</option>
+            <option>سایر</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="occupation">شغل</label>
+          <input id="occupation" name="occupation" type="text" placeholder="مثلاً معلم، مهندس، دانشجو">
+        </div>
+        <div class="field full">
+          <label for="maritalStatus">وضعیت تأهل</label>
+          <select id="maritalStatus" name="maritalStatus">
+            <option value="">انتخاب کنید</option>
+            <option>مجرد</option>
+            <option>متأهل</option>
+            <option>ترجیح می‌دهم نگویم</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label>توان بدنی شما در پیاده‌روی و کوهپیمایی <span class="req">*</span></label>
+          <div class="fitness-options" id="fitnessOptions">
+            <label class="fitness-item" data-value="ضعیف">
+              <input type="radio" name="fitness" value="ضعیف">
+              <div class="ft-title">پایه</div>
+              <div class="ft-desc">مسیرهای کوتاه و هموار مناسب من است</div>
+            </label>
+            <label class="fitness-item" data-value="متوسط">
+              <input type="radio" name="fitness" value="متوسط">
+              <div class="ft-title">متوسط</div>
+              <div class="ft-desc">پیاده‌روی چند ساعته را راحت انجام می‌دهم</div>
+            </label>
+            <label class="fitness-item" data-value="خوب">
+              <input type="radio" name="fitness" value="خوب">
+              <div class="ft-title">خوب</div>
+              <div class="ft-desc">مسیرهای پرشیب و طولانی برایم مشکلی ندارد</div>
+            </label>
+            <label class="fitness-item" data-value="عالی">
+              <input type="radio" name="fitness" value="عالی">
+              <div class="ft-title">عالی</div>
+              <div class="ft-desc">سابقه کوهنوردی حرفه‌ای و صعودهای سنگین دارم</div>
+            </label>
+          </div>
+          <div class="field-error" id="fitnessError">لطفاً سطح توان بدنی خود را انتخاب کنید.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: interests -->
+    <section class="step" data-step="4">
+      <h2>۴. علایق و ترجیحات سفر</h2>
+      <p class="step-help">برای هر نوع سفر از ۱ تا ۵ ستاره میزان علاقه خود را مشخص کنید.</p>
+      <div class="travel-list" id="travelList">
+        <div class="travel-row" data-type="یکروزه">
+          <div><div class="travel-name">یکروزه</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به سفر یکروزه">
+            <button type="button" class="star" data-value="1">★</button><button type="button" class="star" data-value="2">★</button><button type="button" class="star" data-value="3">★</button><button type="button" class="star" data-value="4">★</button><button type="button" class="star" data-value="5">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="اقامتگاهی">
+          <div><div class="travel-name">اقامتگاهی</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به سفر اقامتگاهی">
+            <button type="button" class="star" data-value="1">★</button><button type="button" class="star" data-value="2">★</button><button type="button" class="star" data-value="3">★</button><button type="button" class="star" data-value="4">★</button><button type="button" class="star" data-value="5">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="کمپ">
+          <div><div class="travel-name">کمپ</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به کمپ">
+            <button type="button" class="star" data-value="1">★</button><button type="button" class="star" data-value="2">★</button><button type="button" class="star" data-value="3">★</button><button type="button" class="star" data-value="4">★</button><button type="button" class="star" data-value="5">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="پیمایشی">
+          <div><div class="travel-name">پیمایشی</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به سفر پیمایشی">
+            <button type="button" class="star" data-value="1">★</button><button type="button" class="star" data-value="2">★</button><button type="button" class="star" data-value="3">★</button><button type="button" class="star" data-value="4">★</button><button type="button" class="star" data-value="5">★</button>
+          </div>
+        </div>
+        <div class="travel-row" data-type="کوهنوردی">
+          <div><div class="travel-name">کوهنوردی</div><div class="rating-note">انتخاب نشده</div></div>
+          <div class="stars" aria-label="امتیاز علاقه به کوهنوردی">
+            <button type="button" class="star" data-value="1">★</button><button type="button" class="star" data-value="2">★</button><button type="button" class="star" data-value="3">★</button><button type="button" class="star" data-value="4">★</button><button type="button" class="star" data-value="5">★</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px">
+        <label style="margin-bottom:12px">تجربه‌هایی که در سفر بیشتر دوست دارید</label>
+        <div class="interest-grid">
+          <label class="interest-item"><input type="checkbox" name="interests" value="طبیعت‌گردی"><span>طبیعت‌گردی</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="فرهنگ و تاریخ"><span>فرهنگ و تاریخ</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="غذا و تجربه‌های محلی"><span>غذا و تجربه‌های محلی</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="آرامش و دوری از شلوغی"><span>آرامش و دوری از شلوغی</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="بازی‌های گروهی"><span>بازی‌های گروهی</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="موسیقی"><span>موسیقی</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="ورزش"><span>ورزش</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="مدیتیشن"><span>مدیتیشن</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="عکاسی"><span>عکاسی</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="حیات‌وحش"><span>حیات‌وحش</span></label>
+          <label class="interest-item"><input type="checkbox" name="interests" value="سایر"><span>سایر</span></label>
+        </div>
+        <div class="field full" style="margin-top:14px">
+          <label for="otherInterest">اگر «سایر» را انتخاب کردید، بنویسید</label>
+          <input id="otherInterest" name="otherInterest" type="text" placeholder="مثلاً نجوم، کارگاه هنری، کتاب‌خوانی">
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: review + submit -->
+    <section class="step" data-step="5">
+      <h2>۵. مرور نهایی و ثبت</h2>
+      <p class="step-help">قبل از ثبت نهایی، اطلاعات زیر را بررسی کنید.</p>
+      <div id="reviewArea"></div>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent">تأیید می‌کنم اطلاعات وارد‌شده صحیح است و با استفاده از آن برای برنامه‌ریزی سفرهای اکتیو موافقم.</label>
+      </div>
+      <div class="field-error" id="consentError">برای ثبت، تأیید این مورد الزامی است.</div>
+
+      <div class="success" id="successBox">
+        <h3>اطلاعات با موفقیت ثبت شد ✅</h3>
+        <div id="successText"></div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="btn secondary" id="prevBtn">مرحله قبل</button>
+      <button type="button" class="btn primary" id="nextBtn">مرحله بعد</button>
+      <button type="submit" class="btn primary" id="submitBtn" style="display:none">ثبت نهایی اطلاعات</button>
+    </div>
+
+    <div class="footer-note">نسخه آزمایشی فرم مسافر — اتصال به گوگل‌شیت در مرحله بعد انجام می‌شود</div>
+  </form>
+</div>
+
+<script>
+const TOTAL_STEPS = 5;
+let currentStep = 1;
+const stepTitles = ['اطلاعات هویتی','تماس و ایمنی','مشخصات و توان بدنی','علایق سفر','مرور و ثبت'];
+
+const faDigits = '۰۱۲۳۴۵۶۷۸۹';
+function toEnglishDigits(str){return String(str||'').replace(/[۰-۹]/g,d=>faDigits.indexOf(d));}
+function normalizePhone(value){return toEnglishDigits(value).replace(/[\s\-()]/g,'');}
+function validIranMobile(value){return /^09\d{9}$/.test(normalizePhone(value));}
+function validNationalId(value){
+  const n=toEnglishDigits(value).replace(/\D/g,'');
+  if(!/^\d{10}$/.test(n) || /^([0-9])\1{9}$/.test(n)) return false;
+  const check=+n[9]; let sum=0;
+  for(let i=0;i<9;i++) sum += +n[i]*(10-i);
+  const r=sum%11;
+  return r<2 ? check===r : check===11-r;
+}
+function showError(id,msg){const el=document.getElementById(id);if(!el)return;if(msg)el.textContent=msg;el.style.display='block';}
+function clearErrors(scope){
+  (scope||document).querySelectorAll('.field-error').forEach(e=>e.style.display='none');
+  (scope||document).querySelectorAll('.error').forEach(e=>e.classList.remove('error'));
+}
+
+/* ---------- اتصال به Google Apps Script ----------
+   بعد از دیپلوی Code.gs به‌عنوان Web App، لینک آن را اینجا جایگزین کن. */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzd-goR_6DObjTxRtxlU6dPQ-Je54JqPMop22MBFq4w73tXTZiDweBT6AXiKqfOSgsF/exec';
+function scriptConnected(){ return APPS_SCRIPT_URL && !APPS_SCRIPT_URL.includes('PUT_YOUR'); }
+
+async function checkDuplicateByNationalId(nationalId){
+  if(!scriptConnected()) return false;
+  try{
+    const res = await fetch(`${APPS_SCRIPT_URL}?action=checkDuplicate&nationalId=${encodeURIComponent(nationalId)}`);
+    const data = await res.json();
+    return !!data.exists;
+  }catch(err){
+    console.error('duplicate check failed', err);
+    return false;
+  }
+}
+
+/* ---------- Star ratings ---------- */
+const ratings={};
+document.querySelectorAll('.travel-row').forEach(row=>{
+  const type=row.dataset.type; const note=row.querySelector('.rating-note');
+  row.querySelectorAll('.star').forEach(btn=>btn.addEventListener('click',()=>{
+    const value=Number(btn.dataset.value); ratings[type]=value;
+    row.querySelectorAll('.star').forEach(s=>s.classList.toggle('active',Number(s.dataset.value)<=value));
+    note.textContent = `${value} از ۵ ستاره`;
+  }));
+});
+
+/* ---------- Fitness selector ---------- */
+document.querySelectorAll('.fitness-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.fitness-item').forEach(i=>i.classList.remove('selected'));
+    item.classList.add('selected');
+    item.querySelector('input').checked=true;
+  });
+});
+
+/* ---------- Jalali calendar (unchanged logic) ---------- */
+function div(a,b){ return Math.floor(a/b); }
+function g2j(gy,gm,gd){
+  const gdm=[0,31,59,90,120,151,181,212,243,273,304,334];
+  let gy2=gm>2?gy+1:gy;
+  let days=355666+365*gy+div(gy2+3,4)-div(gy2+99,100)+div(gy2+399,400)+gd+gdm[gm-1];
+  let jy=-1595+33*div(days,12053); days%=12053;
+  jy+=4*div(days,1461); days%=1461;
+  if(days>365){ jy+=div(days-1,365); days=(days-1)%365; }
+  let jm=days<186?1+div(days,31):7+div(days-186,30);
+  let jd=1+(days<186?days%31:(days-186)%30);
+  return [jy,jm,jd];
+}
+function j2g(jy,jm,jd){
+  const gy=jy+621;
+  const jy2=jy-979;
+  let jDayNo=365*jy2+div(jy2,33)*8+div((jy2%33)+3,4);
+  jDayNo += (jm<7 ? (jm-1)*31 : (jm-7)*30+186) + (jd-1);
+  let gDayNo=jDayNo+79;
+  let gy2=1600+400*div(gDayNo,146097); gDayNo%=146097;
+  let leap=true;
+  if(gDayNo>=36525){ gDayNo--; gy2+=100*div(gDayNo,36524); gDayNo%=36524; if(gDayNo>=365) gDayNo++; else leap=false; }
+  gy2+=4*div(gDayNo,1461); gDayNo%=1461;
+  if(gDayNo>=366){ leap=false; gDayNo--; gy2+=div(gDayNo,365); gDayNo%=365; }
+  let gm;
+  const sal_a=[0,31,28,31,30,31,30,31,31,30,31,30,31];
+  if(leap) sal_a[2]=29;
+  for(gm=1;gm<=12 && gDayNo>=sal_a[gm];gm++) gDayNo-=sal_a[gm];
+  const gd=gDayNo+1;
+  return [gy2,gm,gd];
+}
+function jalaliMonthLen(y,m){
+  if(m<=6) return 31;
+  if(m<=11) return 30;
+  const r=((y-474)%2820+2820)%2820;
+  return (r+474+38)*682%2816 < 682 ? 30 : 29;
+}
+function pad2(n){return String(n).padStart(2,'0');}
+function faNum(s){return String(s).replace(/\d/g,d=>faDigits[d]);}
+let nowJ=g2j(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate());
+let dpYear=nowJ[0], dpMonth=nowJ[1];
+const monthNames=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const dp=document.getElementById('datePicker'), dpGrid=document.getElementById('dpGrid'), dpTitle=document.getElementById('dpTitle'), birth=document.getElementById('birthDate');
+const dpYearSelect=document.getElementById('dpYear'), dpMonthSelect=document.getElementById('dpMonth');
+
+for(let y=1300;y<=nowJ[0];y++){
+  const opt=document.createElement('option'); opt.value=y; opt.textContent=faNum(y); dpYearSelect.appendChild(opt);
+}
+monthNames.forEach((name,i)=>{
+  const opt=document.createElement('option'); opt.value=i+1; opt.textContent=name; dpMonthSelect.appendChild(opt);
+});
+function syncSelectors(){ dpYearSelect.value=String(dpYear); dpMonthSelect.value=String(dpMonth); }
+function renderDP(){
+  syncSelectors();
+  dpTitle.textContent=faNum(dpYear)+' '+monthNames[dpMonth-1]; dpGrid.innerHTML='';
+  const g=j2g(dpYear,dpMonth,1);
+  const firstDow=(new Date(g[0],g[1]-1,g[2]).getDay()+1)%7;
+  for(let i=0;i<firstDow;i++){let b=document.createElement('button');b.type='button';b.className='dp-day muted';b.tabIndex=-1;dpGrid.appendChild(b);}
+  const selected=toEnglishDigits(birth.value).replaceAll('-','/').split('/');
+  for(let d=1;d<=jalaliMonthLen(dpYear,dpMonth);d++){
+    let b=document.createElement('button');b.type='button';b.className='dp-day';b.textContent=faNum(d);
+    if(+selected[0]===dpYear&&+selected[1]===dpMonth&&+selected[2]===d)b.classList.add('selected');
+    b.addEventListener('click',()=>{birth.value=faNum(`${dpYear}/${pad2(dpMonth)}/${pad2(d)}`);dp.classList.remove('open');});
+    dpGrid.appendChild(b);
+  }
+}
+function openDP(){dp.classList.toggle('open');renderDP();}
+document.getElementById('datePickerBtn').addEventListener('click',openDP);
+document.getElementById('dpPrev').addEventListener('click',()=>{dpMonth--;if(dpMonth<1){dpMonth=12;dpYear--;}renderDP();});
+document.getElementById('dpNext').addEventListener('click',()=>{dpMonth++;if(dpMonth>12){dpMonth=1;dpYear++;}renderDP();});
+dpYearSelect.addEventListener('change',()=>{dpYear=Number(dpYearSelect.value);renderDP();});
+dpMonthSelect.addEventListener('change',()=>{dpMonth=Number(dpMonthSelect.value);renderDP();});
+document.getElementById('dpToday').addEventListener('click',()=>{dpYear=nowJ[0];dpMonth=nowJ[1];renderDP();});
+birth.addEventListener('change',()=>{let v=toEnglishDigits(birth.value).replaceAll('-','/').split('/');if(v.length>=2&&+v[0]>=1300&&+v[0]<=nowJ[0]&&+v[1]>=1&&+v[1]<=12){dpYear=+v[0];dpMonth=+v[1];renderDP();}});
+document.addEventListener('click',(e)=>{if(dp.classList.contains('open')&&!e.target.closest('.date-wrap'))dp.classList.remove('open');});
+
+/* ---------- Wizard navigation ---------- */
+function buildProgress(){
+  const wrap=document.getElementById('progressWrap');
+  wrap.innerHTML='';
+  for(let i=1;i<=TOTAL_STEPS;i++){
+    const seg=document.createElement('div');
+    seg.className='progress-seg';
+    if(i<currentStep) seg.classList.add('done');
+    if(i===currentStep) seg.classList.add('current');
+    wrap.appendChild(seg);
+  }
+}
+function updateStepUI(){
+  document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active',Number(s.dataset.step)===currentStep));
+  document.getElementById('stepNow').textContent=faNum(currentStep);
+  document.getElementById('stepTitle').textContent=stepTitles[currentStep-1];
+  buildProgress();
+  document.getElementById('prevBtn').style.visibility = currentStep===1 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').style.display = currentStep===TOTAL_STEPS ? 'none' : 'inline-block';
+  document.getElementById('submitBtn').style.display = currentStep===TOTAL_STEPS ? 'inline-block' : 'none';
+  if(currentStep===TOTAL_STEPS) renderReview();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function validateStep(step){
+  const section=document.querySelector(`.step[data-step="${step}"]`);
+  clearErrors(section);
+  let ok=true;
+
+  if(step===1){
+    const name=document.getElementById('fullName');
+    if(!name.value.trim()){name.classList.add('error');showError('fullNameError');ok=false;}
+    const nid=document.getElementById('nationalId');
+    if(!validNationalId(nid.value)){nid.classList.add('error');showError('nationalIdError');ok=false;}
+    else{
+      const isDup = await checkDuplicateByNationalId(toEnglishDigits(nid.value).trim());
+      document.getElementById('nationalIdDupNote').style.display = isDup ? 'block' : 'none';
+    }
+    const b=document.getElementById('birthDate');
+    if(b.value.trim() && !/^\d{4}[\/\-]\d{2}[\/\-]\d{2}$/.test(toEnglishDigits(b.value).trim())){b.classList.add('error');ok=false;}
+  }
+
+  if(step===2){
+    ['mobile','emergencyMobile'].forEach(f=>{
+      const el=document.getElementById(f);
+      if(!validIranMobile(el.value)){el.classList.add('error');showError(f+'Error');ok=false;}
+    });
+    const nb=document.getElementById('neighborhood');
+    if(!nb.value.trim()){nb.classList.add('error');showError('neighborhoodError');ok=false;}
+  }
+
+  if(step===3){
+    if(!document.querySelector('input[name="fitness"]:checked')){showError('fitnessError');ok=false;}
+  }
+
+  if(step===5){
+    const consent=document.getElementById('consent');
+    if(!consent.checked){showError('consentError');ok=false;}
+  }
+
+  return ok;
+}
+
+document.getElementById('nextBtn').addEventListener('click',async ()=>{
+  const ok=await validateStep(currentStep);
+  if(!ok) return;
+  if(currentStep<TOTAL_STEPS){currentStep++;updateStepUI();}
+});
+document.getElementById('prevBtn').addEventListener('click',()=>{
+  if(currentStep>1){currentStep--;updateStepUI();}
+});
+
+function collectData(){
+  const nid=document.getElementById('nationalId');
+  const b=document.getElementById('birthDate');
+  return {
+    fullName:document.getElementById('fullName').value.trim(),
+    nationalId:toEnglishDigits(nid.value).trim(),
+    gender:document.getElementById('gender').value,
+    birthDate:toEnglishDigits(b.value).trim(),
+    mobile:normalizePhone(document.getElementById('mobile').value),
+    emergencyMobile:normalizePhone(document.getElementById('emergencyMobile').value),
+    emergencyName:document.getElementById('emergencyName').value.trim(),
+    neighborhood:document.getElementById('neighborhood').value.trim(),
+    medicalNote:document.getElementById('medicalNote').value.trim(),
+    education:document.getElementById('education').value,
+    occupation:document.getElementById('occupation').value.trim(),
+    maritalStatus:document.getElementById('maritalStatus').value,
+    fitness:(document.querySelector('input[name="fitness"]:checked')||{}).value||'',
+    travelRatings:{...ratings},
+    interests:[...document.querySelectorAll('input[name="interests"]:checked')].map(x=>x.value),
+    otherInterest:document.getElementById('otherInterest').value.trim()
+  };
+}
+
+function renderReview(){
+  const d=collectData();
+  const area=document.getElementById('reviewArea');
+  const row=(k,v)=>`<div class="review-row"><span class="k">${k}</span><span class="v">${v||'—'}</span></div>`;
+  area.innerHTML = `
+    <div class="review-block">
+      <h3>اطلاعات هویتی <button type="button" class="edit-link" data-goto="1">ویرایش</button></h3>
+      ${row('نام و نام خانوادگی',d.fullName)}
+      ${row('کد ملی',faNum(d.nationalId))}
+      ${row('جنسیت',d.gender)}
+      ${row('تاریخ تولد',faNum(d.birthDate))}
+    </div>
+    <div class="review-block">
+      <h3>تماس و ایمنی <button type="button" class="edit-link" data-goto="2">ویرایش</button></h3>
+      ${row('موبایل',faNum(d.mobile))}
+      ${row('تماس ضروری',faNum(d.emergencyMobile) + (d.emergencyName? ' ('+d.emergencyName+')':''))}
+      ${row('محله',d.neighborhood)}
+      ${row('نکات پزشکی',d.medicalNote||'—')}
+    </div>
+    <div class="review-block">
+      <h3>مشخصات و توان بدنی <button type="button" class="edit-link" data-goto="3">ویرایش</button></h3>
+      ${row('تحصیلات',d.education)}
+      ${row('شغل',d.occupation)}
+      ${row('تأهل',d.maritalStatus)}
+      ${row('توان بدنی',d.fitness)}
+    </div>
+    <div class="review-block">
+      <h3>علایق سفر <button type="button" class="edit-link" data-goto="4">ویرایش</button></h3>
+      ${Object.keys(d.travelRatings).length ? Object.entries(d.travelRatings).map(([k,v])=>row(k,faNum(v)+' ★')).join('') : row('امتیازها','ثبت نشده')}
+      ${row('تجربه‌های مورد علاقه', d.interests.length? d.interests.join('، ') : '—')}
+    </div>
+  `;
+  area.querySelectorAll('.edit-link').forEach(btn=>{
+    btn.addEventListener('click',()=>{currentStep=Number(btn.dataset.goto);updateStepUI();});
+  });
+}
+
+document.getElementById('passengerForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const ok = await validateStep(5);
+  if(!ok) return;
+  const data = collectData();
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true; const originalLabel = submitBtn.textContent; submitBtn.textContent = 'در حال ثبت...';
+
+  try{
+    if(scriptConnected()){
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'}, // برای جلوگیری از CORS preflight
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if(!result.success) throw new Error(result.error || 'save_failed');
+      document.getElementById('successText').textContent = result.updated
+        ? 'اطلاعات قبلی شما به‌روزرسانی شد. متشکریم!'
+        : 'اطلاعات شما با موفقیت ثبت شد. متشکریم!';
+    } else {
+      document.getElementById('successText').textContent = 'اتصال به دیتابیس هنوز فعال نیست — این فقط یک نمایش آزمایشی است.';
+      console.log('Passenger form payload:', data);
+    }
+    document.getElementById('successBox').style.display='block';
+    document.querySelector('.actions').style.display='none';
+    document.getElementById('successBox').scrollIntoView({behavior:'smooth',block:'center'});
+  }catch(err){
+    console.error(err);
+    alert('ثبت اطلاعات با خطا مواجه شد. لطفاً دوباره تلاش کنید یا اتصال اینترنت را بررسی کنید.');
+  }finally{
+    submitBtn.disabled = false; submitBtn.textContent = originalLabel;
+  }
+});
+
+buildProgress();
+updateStepUI();
+</script>
+</body>
+</html>
